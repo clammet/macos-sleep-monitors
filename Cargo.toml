@@ -1,6 +1,6 @@
 [package]
 name = "macos-sleep-monitors"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 rust-version = "1.85"
 description = "A tiny macOS menu bar app that puts displays to sleep."
@@ -13,7 +13,7 @@ objc2-app-kit = { version = "0.3.2", default-features = false, features = [
     "NSStatusBar", "NSStatusBarButton", "NSStatusItem", "NSView",
 ] }
 objc2-foundation = { version = "0.3.2", default-features = false, features = [
-    "std", "NSError", "NSNotification", "NSObject", "NSString", "NSTimer",
+    "std", "NSData", "NSError", "NSGeometry", "NSNotification", "NSObject", "NSString", "NSTimer",
 ] }
 
 [profile.release]

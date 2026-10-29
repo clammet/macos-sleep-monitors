@@ -64,6 +64,17 @@ cargo run -- --check
 
 Run `make check` for formatting, Clippy, and bundle metadata checks.
 
+## Icons
+
+Both icons use Lucide's [monitor-off](https://lucide.dev/icons/monitor-off).
+The menu bar uses an 18-point vector template that adapts to macOS appearance.
+The app icon uses the same symbol in white on a slate rounded-square background,
+packaged as an ICNS with standard and Retina sizes.
+
+The generated assets are checked in, so building the app needs no icon tools.
+To regenerate them, install `librsvg` (`brew install librsvg`) and run `make icons`.
+See [the icon source and license](assets/lucide/README.md).
+
 ## HDMI recovery research
 
 See [display recovery notes](docs/display-recovery.md) for the PG279Q

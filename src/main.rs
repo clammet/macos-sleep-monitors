@@ -9,7 +9,7 @@ use std::process::Command;
 
 use objc2::rc::Retained;
 use objc2::runtime::ProtocolObject;
-use objc2::{DefinedClass, MainThreadOnly, define_class, msg_send, sel};
+use objc2::{AnyThread, DefinedClass, MainThreadOnly, define_class, msg_send, sel};
 use objc2_app_kit::{
     NSAlert, NSAlertFirstButtonReturn, NSApplication, NSApplicationActivationPolicy,
     NSApplicationDelegate, NSControlStateValueMixed, NSControlStateValueOff, NSControlStateValueOn,
@@ -17,7 +17,8 @@ use objc2_app_kit::{
     NSStatusItem,
 };
 use objc2_foundation::{
-    MainThreadMarker, NSNotification, NSObject, NSObjectProtocol, NSString, NSTimer, ns_string,
+    MainThreadMarker, NSData, NSNotification, NSObject, NSObjectProtocol, NSSize, NSString,
+    NSTimer, ns_string,
 };
 
 type SleepDisplays = unsafe extern "C" fn() -> i32;
@@ -184,10 +185,15 @@ impl App {
         let mtm = self.mtm();
         let item = NSStatusBar::systemStatusBar().statusItemWithLength(28.0);
         let button = item.button(mtm).expect("status item should have a button");
-        if let Some(image) = NSImage::imageWithSystemSymbolName_accessibilityDescription(
-            ns_string!("display"),
-            Some(ns_string!("Sleep Monitors")),
-        ) {
+        let icon = NSData::with_bytes(include_bytes!("../assets/MonitorOffTemplate.pdf"));
+        let image = NSImage::initWithData(NSImage::alloc(), &icon).or_else(|| {
+            NSImage::imageWithSystemSymbolName_accessibilityDescription(
+                ns_string!("display"),
+                Some(ns_string!("Sleep Monitors")),
+            )
+        });
+        if let Some(image) = image {
+            image.setSize(NSSize::new(18.0, 18.0));
             image.setTemplate(true);
             button.setImage(Some(&image));
         } else {
